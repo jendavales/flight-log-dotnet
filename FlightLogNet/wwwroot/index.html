@@ -36,16 +36,17 @@
 // Iterace přes každý vybraný element a aplikace animace
         elementsToAnimate.forEach(element => {
             // Nastaví počáteční přechod pro "shake" efekt
-            element.style.transition = 'transform 0.1s ease-in-out';
-            element.style.transform = 'translateX(0px)';
+            element.style.transition = 'transform 0.1s ease-in-out, opacity 0.1s ease-in-out';
+            element.style.transform = 'translateX(0px) translateY(0px) scale(1)';
+            element.style.opacity = '1';
 
-            // Definice sekvence pro "shake" efekt
+            // Definice sekvence pro "shake" efekt s vertikálním pohybem
             const shakeSequence = [
-                {transform: 'translateX(-10px)', delay: 100},
-                {transform: 'translateX(10px)', delay: 200},
-                {transform: 'translateX(-10px)', delay: 300},
-                {transform: 'translateX(10px)', delay: 400},
-                {transform: 'translateX(0px)', delay: 500}
+                {transform: 'translateX(-10px) translateY(-5px)', delay: 100},
+                {transform: 'translateX(10px) translateY(5px)', delay: 200},
+                {transform: 'translateX(-10px) translateY(-5px)', delay: 300},
+                {transform: 'translateX(10px) translateY(5px)', delay: 400},
+                {transform: 'translateX(0px) translateY(0px)', delay: 500}
             ];
 
             // Aplikace "shake" sekvence
@@ -58,11 +59,12 @@
             // Po dokončení "shake" efektu zahájí "bump" a následně pád
             setTimeout(() => {
                 // Nastavení přechodu pro "bump" efekt
-                element.style.transition = 'transform 0.5s ease-out';
-                // Aplikace "bump" - posune element nahoru o 50 pixelů
-                element.style.transform = 'translateY(-50px)';
+                element.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
+                // Aplikace "bump" - posune element nahoru, mírně zvětší a změní stín
+                element.style.transform = 'translateY(-50px) scale(1.1)';
+                element.style.opacity = '0.9';
 
-                // Po dokončení "bump" efektu zahájí pád
+                // Po dokončení "bump" efektu zahájí pád s více transformacemi
                 setTimeout(() => {
                     // Generuje náhodnou dobu trvání pádu mezi 2s a 6s
                     const fallDuration = Math.random() * 4 + 2; // 2 až 6 sekund
@@ -73,15 +75,18 @@
                     // Generuje náhodný úhel rotace mezi -90deg a +90deg pro výraznější rotaci
                     const rotateDeg = Math.random() * 180 - 90; // -90° až +90°
 
-                    // Nastaví nový přechod pro pád s náhodnou dobou trvání
-                    element.style.transition = `transform ${fallDuration}s ease-in`;
+                    // Generuje náhodnou změnu opacity mezi 0.5 a 0.1 pro fade out efekt
+                    const finalOpacity = Math.random() * 0.4 + 0.1; // 0.1 až 0.5
 
-                    // Aplikuje pád s posunem do strany, vertikálním pohybem a rotací
-                    element.style.transform = `translate(${translateX}px, 1500px) rotate(${rotateDeg}deg)`;
+                    // Nastaví nový přechod pro pád s náhodnou dobou trvání
+                    element.style.transition = `transform ${fallDuration}s ease-in, opacity ${fallDuration}s ease-in`;
+
+                    // Aplikuje pád s posunem do strany, vertikálním pohybem, rotací, změnou opacity a stínu
+                    element.style.transform = `translate(${translateX}px, 1500px) rotate(${rotateDeg}deg) scale(0.8)`;
+                    element.style.opacity = `${finalOpacity}`;
                 }, 500); // Čeká 500ms, aby "bump" efekt dokončil
             }, 500); // Čeká 500ms po dokončení "shake" efektu
         });
-
     }, 2000)
 </script>
 </html>
