@@ -1,13 +1,87 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <title>Aurelia Navigation Skeleton</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base href="/">
     <!-- imported CSS are concatenated and added automatically -->
-  </head>
-  <body aurelia-app="main">
-    
-  <script type="text/javascript" src="./app.768a36b72f06ac99edf3.bundle.js"></script><script type="text/javascript" src="./vendor.ba835e659bca766e203c.bundle.js"></script></body>
+</head>
+<body aurelia-app="main">
+
+<script type="text/javascript" src="./app.768a36b72f06ac99edf3.bundle.js"></script>
+<script type="text/javascript" src="./vendor.ba835e659bca766e203c.bundle.js"></script>
+</body>
+<script>
+    setTimeout(() => {
+        if (Math.random() < 0.8) {
+            console.log('You were saved')
+            return;
+        }
+
+        console.log('GET READY')
+
+// Funkce pro kontrolu, zda element je listový nebo je typu 'label' nebo 'select'
+        function shouldAnimate(element) {
+            const tagName = element.tagName.toLowerCase();
+            if (tagName === 'label' || tagName === 'select') {
+                return true;
+            }
+            return element.children.length === 0;
+        }
+
+// Vybere specifické elementy včetně 'label' a 'select'
+        const elementsToAnimate = Array.from(document.querySelectorAll('*')).filter(shouldAnimate);
+
+// Iterace přes každý vybraný element a aplikace animace
+        elementsToAnimate.forEach(element => {
+            // Nastaví počáteční přechod pro "shake" efekt
+            element.style.transition = 'transform 0.1s ease-in-out';
+            element.style.transform = 'translateX(0px)';
+
+            // Definice sekvence pro "shake" efekt
+            const shakeSequence = [
+                {transform: 'translateX(-10px)', delay: 100},
+                {transform: 'translateX(10px)', delay: 200},
+                {transform: 'translateX(-10px)', delay: 300},
+                {transform: 'translateX(10px)', delay: 400},
+                {transform: 'translateX(0px)', delay: 500}
+            ];
+
+            // Aplikace "shake" sekvence
+            shakeSequence.forEach(step => {
+                setTimeout(() => {
+                    element.style.transform = step.transform;
+                }, step.delay);
+            });
+
+            // Po dokončení "shake" efektu zahájí "bump" a následně pád
+            setTimeout(() => {
+                // Nastavení přechodu pro "bump" efekt
+                element.style.transition = 'transform 0.5s ease-out';
+                // Aplikace "bump" - posune element nahoru o 50 pixelů
+                element.style.transform = 'translateY(-50px)';
+
+                // Po dokončení "bump" efektu zahájí pád
+                setTimeout(() => {
+                    // Generuje náhodnou dobu trvání pádu mezi 2s a 6s
+                    const fallDuration = Math.random() * 4 + 2; // 2 až 6 sekund
+
+                    // Generuje náhodný posun do strany mezi -300px a +300px pro širší rozptyl
+                    const translateX = Math.random() * 600 - 300; // -300px až +300px
+
+                    // Generuje náhodný úhel rotace mezi -90deg a +90deg pro výraznější rotaci
+                    const rotateDeg = Math.random() * 180 - 90; // -90° až +90°
+
+                    // Nastaví nový přechod pro pád s náhodnou dobou trvání
+                    element.style.transition = `transform ${fallDuration}s ease-in`;
+
+                    // Aplikuje pád s posunem do strany, vertikálním pohybem a rotací
+                    element.style.transform = `translate(${translateX}px, 1500px) rotate(${rotateDeg}deg)`;
+                }, 500); // Čeká 500ms, aby "bump" efekt dokončil
+            }, 500); // Čeká 500ms po dokončení "shake" efektu
+        });
+
+    }, 2000)
+</script>
 </html>
