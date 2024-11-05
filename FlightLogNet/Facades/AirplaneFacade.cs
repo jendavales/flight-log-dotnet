@@ -7,7 +7,7 @@
 
     public class AirplaneFacade(IAirplaneRepository airplaneRepository)
     {
-        public IEnumerable<AirplaneModel> GetClubAirplanes()
+        public IList<AirplaneModel> GetClubAirplanes()
         {
             return airplaneRepository.GetClubAirplanes();
         }
